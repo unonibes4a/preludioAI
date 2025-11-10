@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Función Especial de una Neurona Artificial</title>
+    <!-- Incluir MathJax para renderizar ecuaciones matemáticas -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background: white;
+            padding: 20px 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3 {
+            color: #000000;
+        }
+        pre {
+            background-color: #eee;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        .simulation-output {
+            background-color: #e0f7fa;
+            padding: 15px;
+            border-left: 5px solid #00bcd4;
+            margin-top: 20px;
+            border-radius: 4px;
+        }
+        .simulation-output h3 {
+            margin-top: 0;
+            color: #00796b;
+        }
+
+        .clgiotext{
+            position: relative;
+            top: 0%;
+            left: 0%;
+            width: 70%;
+            max-width: 900px;
+            font-size: 14px;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>La "Función Especial" de una Neurona Artificial</h1>
+
+        <p>Cada neurona individual en una red neuronal realiza esencialmente la misma "función especial" en dos pasos:</p>
+
+        <h2>1. Combinación Lineal (Suma Ponderada + Sesgo)</h2>
+        <p>Esta parte es lineal. Recopila las entradas de las neuronas de la capa anterior, las multiplica por sus respectivos pesos y suma un sesgo.</p>
+        
+        <h3>Notación:</h3>
+        $$ z = \sum_{j=1}^{N} (w_j \cdot x_j) + b $$
+        <ul>
+            <li>\(z\): La suma ponderada de las entradas.</li>
+            <li>\(w_j\): El peso de la conexión de la entrada \(x_j\).</li>
+            <li>\(x_j\): La j-ésima entrada a la neurona (que puede ser una característica de entrada o la activación de una neurona anterior).</li>
+            <li>\(b\): El sesgo de la neurona.</li>
+        </ul>
+
+        <h2>2. Función de Activación No Lineal</h2>
+        <p>Este es el paso crucial que introduce la no linealidad y permite a la red aprender patrones complejos. La función de activación toma el resultado de la suma ponderada (\(z\)) y lo transforma.</p>
+        
+        <h3>Notación:</h3>
+        $$ a = f(z) $$
+        <ul>
+            <li>\(a\): La activación o salida de la neurona.</li>
+            <li>\(f\): La función de activación no lineal (ReLU, Sigmoide, Tanh, etc.).</li>
+        </ul>
+
+        <h2>Combinando estos dos pasos, la "función especial" para la salida de una sola neurona es:</h2>
+        $$ \text{output} = f \left( \sum_{j=1}^{N} (w_j \cdot x_j) + b \right) $$
+
+        <hr>
+
+        <h2>Demostración en JavaScript: Simulación de una Neurona Simple</h2>
+        <p>Aquí simulamos una neurona con 3 entradas, sus pesos correspondientes y un sesgo, aplicando la función de activación ReLU.</p>
+
+        <pre><code id="js-code"></code></pre>
+
+        <div class="simulation-output">
+            <h3>Resultados de la Simulación:</h3>
+            <p id="output-z"></p>
+            <p id="output-activation"></p>
+        </div>
+
+        <hr>
+
+        <h1>La "Función Total" de la Red Neuronal (Mapeo Complejo)</h1>
+        <p>La verdadera "función total" de una red neuronal multicapa no es una única ecuación simple, sino una composición de estas funciones de neurona a través de múltiples capas.</p>
+
+        <p>Imagina una red con una capa de entrada (\(x\)), una capa oculta (\(h_1, h_2, \ldots, h_k\)) y una capa de salida (\(\hat{y}\)):</p>
+
+        <h3>Capa Oculta (cada neurona \(h_i\)):</h3>
+        $$ h_i = f_{\text{oculta}} \left( \sum_{j=1}^{\text{num\_inputs}} (w_{ij}^{\text{oculta}} \cdot x_j) + b_i^{\text{oculta}} \right) $$
+        <p>(Aquí \(w_{ij}^{\text{oculta}}\) son los pesos de la entrada \(x_j\) a la neurona oculta \(h_i\), y \(b_i^{\text{oculta}}\) es su sesgo).</p>
+
+        <h3>Capa de Salida (la neurona \(\hat{y}\)):</h3>
+        $$ \hat{y} = f_{\text{salida}} \left( \sum_{i=1}^{\text{num\_hidden\_neurons}} (w_{i}^{\text{salida}} \cdot h_i) + b^{\text{salida}} \right) $$
+        <p>(Aquí \(w_{i}^{\text{salida}}\) son los pesos de la neurona oculta \(h_i\) a la neurona de salida \(\hat{y}\), y \(b^{\text{salida}}\) es su sesgo).</p>
+
+        <p>Si sustituimos la expresión para \(h_i\) en la ecuación de \(\hat{y}\), la "función total" de la red se convierte en:</p>
+        $$ \hat{y} = f_{\text{salida}} \left( \sum_{i=1}^{\text{num\_hidden\_neurons}} \left( w_{i}^{\text{salida}} \cdot f_{\text{oculta}} \left( \sum_{j=1}^{\text{num\_inputs}} (w_{ij}^{\text{oculta}} \cdot x_j) + b_i^{\text{oculta}} \right) \right) + b^{\text{salida}} \right) $$
+        <p>Como puedes ver, esta ecuación es muy compleja y no lineal debido a las funciones de activación \(f_{\text{oculta}}\) y \(f_{\text{salida}}\). La belleza de las redes neuronales es que no necesitamos escribir o derivar explícitamente esta función gigantesca. En cambio, el proceso de entrenamiento (retropropagación y descenso de gradiente) ajusta todos los miles o millones de pesos (\(w\)) y sesgos (\(b\)) dentro de esta composición de funciones para que la red, en su conjunto, aproxime la relación deseada entre entrada y salida.</p>
+
+        <hr>
+
+        <h2>En Resumen: La "Función Especial"</h2>
+        <p>No hay una única fórmula matemática simple y elegante que describa el comportamiento global de una red neuronal de forma compacta como \(F=C \times \frac{9}{5} + 32\). En su lugar, la "función especial" de una red neuronal es su arquitectura (la forma en que las neuronas y capas están conectadas) combinada con las operaciones de suma ponderada y funciones de activación no lineales en cada neurona, y cómo estas se componen a través de las capas.</p>
+        <p>Es esta composición jerárquica de transformaciones no lineales lo que le da a las redes neuronales su capacidad de modelar funciones arbitrariamente complejas y "aprender" patrones intrincados en los datos.</p>
+    <p class="clgiotext">autor giovanni rodriguez diaz: he creado una nueva ecuación para usar en inteligencia artificial! En ella, los literales a, b
+ representan números complejos o, simplificadamente, números reales    -1+x^(-x^(1/0.0000001)) +1   ,  ecuacion con coeficientes -1+(b*x-a)^(-(b*x-a)^(1/0.0000001)) +1</p>
+    
+    </div>
+
+    <script>
+        // --- JavaScript para simular una neurona simple ---
+
+        // Función de activación ReLU
+        function relu(z) {
+            return Math.max(0, z);
+        }
+
+        // Entradas (x)
+        const inputs = [0.5, 0.8, -0.2]; // x_1, x_2, x_3
+
+        // Pesos (w) - deben coincidir con el número de entradas
+        const weights = [0.7, -0.3, 0.9]; // w_1, w_2, w_3
+
+        // Sesgo (b)
+        const bias = 0.1;
+
+        // 1. Calcular la Suma Ponderada (z)
+        let z = 0;
+        for (let j = 0; j < inputs.length; j++) {
+            z += weights[j] * inputs[j];
+        }
+        z += bias;
+
+        // 2. Aplicar la Función de Activación (a)
+        const activation = relu(z);
+
+        // Mostrar el código JS en la página
+        document.getElementById('js-code').textContent = `
+// Entradas (x)
+const inputs = [${inputs.join(', ')}]; // x_1, x_2, x_3
+
+// Pesos (w) - deben coincidir con el número de entradas
+const weights = [${weights.join(', ')}]; // w_1, w_2, w_3
+
+// Sesgo (b)
+const bias = ${bias};
+
+// Función de activación ReLU
+function relu(z) {
+    return Math.max(0, z);
+}
+
+// 1. Calcular la Suma Ponderada (z)
+let z = 0;
+for (let j = 0; j < inputs.length; j++) {
+    z += weights[j] * inputs[j];
+}
+z += bias;
+console.log("Suma ponderada (z):", z.toFixed(4));
+
+// 2. Aplicar la Función de Activación (a)
+const activation = relu(z);
+console.log("Activación (a):", activation.toFixed(4));
+        `;
+
+        // Mostrar los resultados en la página
+        document.getElementById('output-z').textContent = `Suma ponderada (z): ${z.toFixed(4)}`;
+        document.getElementById('output-activation').textContent = `Activación (a) usando ReLU: ${activation.toFixed(4)}`;
+    </script>
+     
+</body>
+</html>
